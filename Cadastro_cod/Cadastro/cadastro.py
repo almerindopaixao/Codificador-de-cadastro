@@ -7,7 +7,7 @@ class Cadastro(object):
         self.__email = ''
 
     def cadastrarPessoa(self):
-        nome = input('Digite o nome do indivíduo\n')
+        nome = input('Digite o nome do indivíduo\n').lower()
         self.__nome = nome
 
         while True:
@@ -203,3 +203,60 @@ class ManipulaCadastro(object):
             except Exception as E:
                 print(E)
                 cls.pessoas = []
+
+    @classmethod
+    def pegaCadastro(cls):
+        while True:
+            name = input('Digite o nome da pessoa\n').lower()
+
+            for pessoa in cls.pessoas:
+                if name == pessoa.nome:
+                    cls.__formataCadastro(pessoa)
+                    return
+
+            print('Pessoa não encontrada em nossa base de dados')
+            break
+
+    @staticmethod
+    def __formataCadastro(pessoa):
+        print(f'Nome: {pessoa.nome}')
+        print(f'Idade: {pessoa.idade}')
+        print(f'Email: {pessoa.email}')
+        ManipulaCadastro().imprimeRG(pessoa)
+        ManipulaCadastro().imprimeCPF(pessoa)
+        print('')
+
+    @staticmethod
+    def colocaZero(num, palavra):
+        if len(palavra) < num:
+            return (num - len(palavra))*'0' + palavra
+        else:
+            return palavra
+
+    @staticmethod
+    def imprimeRG(pessoa):
+        RG = pessoa.rg
+
+        ultimo = str(RG % 10)
+        RG //= 10
+        terceiro_tres = ManipulaCadastro().colocaZero(3, str(RG % 1000))
+        RG //= 1000
+        segundo_tres = ManipulaCadastro().colocaZero(3, str(RG % 1000))
+        RG //= 1000
+        primeiro_dois = ManipulaCadastro().colocaZero(2, str(RG % 100))
+
+        print(f'RG: {primeiro_dois}.{segundo_tres}.{terceiro_tres}-{ultimo}')
+
+    @staticmethod
+    def imprimeCPF(pessoa):
+        CPF = pessoa.cpf
+
+        ultimos_dois = ManipulaCadastro().colocaZero(2, str(CPF % 100))
+        CPF //= 100
+        terceiro_tres = ManipulaCadastro().colocaZero(3, str(CPF % 1000))
+        CPF //= 1000
+        segundo_tres = ManipulaCadastro().colocaZero(3, str(CPF % 1000))
+        CPF //= 1000
+        primeiros_tres = ManipulaCadastro().colocaZero(3, str(CPF % 1000))
+
+        print(f'CPF: {primeiros_tres}.{segundo_tres}.{terceiro_tres}/{ultimos_dois}')

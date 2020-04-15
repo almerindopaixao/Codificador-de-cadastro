@@ -5,9 +5,7 @@ from copy import copy
 def main():
     ManipulaCadastro().carregaListaDeCadastrados()
     while True:
-        print(ManipulaCadastro().pessoas)
         comando = recebeComando()
-        print(comando)
 
         if comando.startswith('n'):
            adicionaCadastro()
@@ -16,18 +14,10 @@ def main():
             if len(ManipulaCadastro().pessoas) == 0:
                 print('Não há nenhum cadastro')
             else:
-                pass
+                ManipulaCadastro().pegaCadastro()
         else:
             break
     ManipulaCadastro().salvarPessoas()
-
-
-def pegaCadastro(pessoas):
-    pass
-
-
-def carregarListaDeCadastrados():
-    return ManipulaCadastro().carregaListaDeCadastrados()
 
 
 def adicionaCadastro():
